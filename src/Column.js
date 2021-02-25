@@ -7,13 +7,16 @@ const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
     border-radius: 2px;
-    background-color: white;
+
+
 `;
 const Title = styled.h3`
     padding: 8px;
 `;
 const TaskList = styled.div`
     padding: 8px;
+    transition: background-color 0.2s ease-in;
+    background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'white')};
 `;
 
 export default class Column extends Component {
@@ -22,11 +25,12 @@ export default class Column extends Component {
             <Container>
                 <Title>{this.props.column.title}</Title>
                 <Droppable droppableId={this.props.column.id}>
-                    {provided => (
+                    {(provided, snapshot) => (
                        <TaskList
                           innerRef={provided.innerRef}
                           ref={provided.innerRef}
                           {...provided.droppableProps}
+                          isDraggingOver={snapshot.isDraggingOver}
                         >
                           {this.props.tasks.map((task, index) => (
                           <Task key={task.id} task={task} index={index} />
