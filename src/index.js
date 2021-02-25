@@ -10,14 +10,12 @@ class App extends React.Component {
   state = testData
 
   onDragEnd = result => {
-    
+
   }
 
   render(){
     return (
       <DragDropContext
-        onDragStart
-        onDragUpdate
         onDragEnd={this.onDragEnd}
       >
         {this.state.columnOrder.map(columnId => {
