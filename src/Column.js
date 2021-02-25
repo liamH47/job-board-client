@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Task from './Task'
 import { Droppable } from 'react-beautiful-dnd'
 
-const Container = styled.section`
+const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
     border-radius: 2px;
@@ -24,9 +24,12 @@ export default class Column extends Component {
                     {provided => (
                        <TaskList
                           innerRef={provided.innerRef}
-                         {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
                         >
-                          {this.props.tasks.map((task, index) => <Task index={index} key={task.id} task={task} />)}
+                          {this.props.tasks.map((task, index) => (
+                          <Task key={task.id} task={task} index={index} />
+                          ))}
                           {provided.placeholder}
                        </TaskList>
                     )}
