@@ -5,12 +5,30 @@ import Column from './Column'
 import styled from 'styled-components'
 import { DragDropContext } from 'react-beautiful-dnd'
 
+const Container = styled.div`
+  display: flex;
+`
 class App extends React.Component {
   
   state = testData
 
+  onDragStart = () => {
+    document.body.style.color = 'purple';
+    document.body.style.transition = 'background-color 0.2s ease'
+  }
+
+  onDragUpdate = update => {
+    const { destination } = update;
+    const opacity = destination
+      ? destination.index / Object.keys(this.state.tasks).length
+      : 0;
+    document.body.style.backgroundColor = `rgba(153, 141, 217, ${opacity})`
+  }
+
   onDragEnd = result => {
-    const {destination, source, draggableId } = result
+    document.body.style.color = 'inherit';
+    document.body.style.backgroundColor = 'inherit';
+    const {destination, source, draggableId } = result;
 
     if(!destination) {
       return
@@ -45,15 +63,19 @@ class App extends React.Component {
 
   render(){
     return (
-      <DragDropContext
-        onDragEnd={this.onDragEnd}
-      >
-        {this.state.columnOrder.map(columnId => {
-          const column = this.state.columns[columnId];
-          const tasks = column.taskIds.map(taskId => this.state.tasks[taskId])
-          return <Column key={column.id} column={column} tasks={tasks}/>
-        })}
-      </DragDropContext>
+      <Container>
+        <DragDropContext
+          onDragStart={this.onDragStart}
+          onDragUpdate={this.onDragUpdate}
+          onDragEnd={this.onDragEnd}
+        >
+          {this.state.columnOrder.map(columnId => {
+            const column = this.state.columns[columnId];
+            const tasks = column.taskIds.map(taskId => this.state.tasks[taskId])
+            return <Column key={column.id} column={column} tasks={tasks}/>
+          })}
+        </DragDropContext>
+      </Container>
     )
   }
 }
