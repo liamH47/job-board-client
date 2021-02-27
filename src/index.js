@@ -5,7 +5,7 @@ import Column from './Column'
 import styled from 'styled-components'
 import { DragDropContext } from 'react-beautiful-dnd'
 
-const Container = styled.div`
+const Container = styled.main`
   display: flex;
 `
 class App extends React.Component {
@@ -40,24 +40,52 @@ class App extends React.Component {
       return;
     }
 
-    const column = this.state.columns[source.droppableId]
-    const newTaskIds = Array.from(column.taskIds);
-    newTaskIds.splice(source.index, 1);
-    newTaskIds.splice(destination.index, 0, draggableId)
+    const start = this.state.columns[source.droppableId]
+    const finish = this.state.columns[destination.droppableId]
 
-    const newColumn = {
-      ...column,
-      taskIds: newTaskIds,
+    //Moving within same list
+    if(start === finish) {
+      const newTaskIds = Array.from(start.taskIds);
+      newTaskIds.splice(source.index, 1);
+      newTaskIds.splice(destination.index, 0, draggableId)
+  
+      const newColumn = {
+        ...start,
+        taskIds: newTaskIds,
+      }
+  
+      const newState = {
+        ...this.state, 
+        columns: {
+          ...this.state.columns,
+          [newColumn.id]: newColumn,
+        }
+      }
+  
+      this.setState(newState)
+      return
     }
-
+    //Moving between lists
+    const startTaskIds = Array.from(start.taskIds)
+    startTaskIds.splice(source.index, 1);
+    const newStart = {
+      ...start,
+      taskIds: startTaskIds,
+    }
+    const finishTaskIds = Array.from(finish.taskIds);
+    finishTaskIds.splice(destination.index, 0, draggableId)
+    const newFinish = {
+      ...finish,
+      taskIds: finishTaskIds,
+    }
     const newState = {
-      ...this.state, 
+      ...this.state,
       columns: {
         ...this.state.columns,
-        [newColumn.id]: newColumn,
+        [newStart.id]: newStart,
+        [newFinish.id]: newFinish,
       }
     }
-
     this.setState(newState)
   }
 
