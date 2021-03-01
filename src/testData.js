@@ -24,7 +24,6 @@ const testData = {
         'column-4': {
             id: 'column-4',
             title: 'Rejected',
-            taskIds: [],
         }
     },
     columnOrder: ['column-1', 'column-2', 'column-3', 'column-4'],
