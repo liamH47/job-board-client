@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import Task from './Task'
 import { Droppable } from 'react-beautiful-dnd'
-import InnerList from './InnerList'
+
 
 const Container = styled.div`
     margin: 8px;
@@ -16,6 +16,7 @@ const Container = styled.div`
 `;
 const Title = styled.h3`
     padding: 8px;
+    text-align: center;
 `;
 const TaskList = styled.div`
     padding: 8px;
@@ -38,7 +39,9 @@ export default class Column extends Component {
                           {...provided.droppableProps}
                           isDraggingOver={snapshot.isDraggingOver}
                         >
-                          <InnerList tasks={this.props.tasks} />
+                          {this.props.tasks.map((task, index) => (
+                          <Task key={task.id} task={task} index={index} />
+                          ))}
                           {provided.placeholder}
                        </TaskList>
                     )}
