@@ -20,8 +20,12 @@ const testData = {
             id: 'column-3',
             title: 'Phone Interview',
             taskIds: [],
+        },
+        'column-4': {
+            id: 'column-4',
+            title: 'Rejected',
         }
     },
-    columnOrder: ['column-1', 'column-2', 'column-3'],
+    columnOrder: ['column-1', 'column-2', 'column-3', 'column-4'],
 }
 export default testData
